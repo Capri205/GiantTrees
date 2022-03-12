@@ -86,49 +86,32 @@ public class TreePopulator extends BlockPopulator {
   private boolean isAcceptableBiome(final Biome biome) {
     return (biome == Biome.FOREST) || (biome == Biome.BIRCH_FOREST)
            || (biome == Biome.SWAMP) || (biome == Biome.JUNGLE)
-           || (biome == Biome.DARK_FOREST) || (biome == Biome.DARK_FOREST_HILLS)
-           || (biome == Biome.MOUNTAINS) || (biome == Biome.TAIGA)
+           || (biome == Biome.DARK_FOREST) || (biome == Biome.TAIGA)
            || (biome == Biome.SAVANNA);
   }
 
   private Biome simplifyBiome(final Biome biome) {
     switch (biome) {
       case FOREST:
+      case WINDSWEPT_FOREST:
       case FLOWER_FOREST:
         return Biome.FOREST;
       case BIRCH_FOREST:
-      case BIRCH_FOREST_HILLS:
-      case TALL_BIRCH_FOREST:
-      case TALL_BIRCH_HILLS:
+      case OLD_GROWTH_BIRCH_FOREST:
         return Biome.BIRCH_FOREST;
       case SWAMP:
-      case SWAMP_HILLS:
         return Biome.SWAMP;
       case JUNGLE:
-      case JUNGLE_HILLS:
-      case MODIFIED_JUNGLE:
+      case SPARSE_JUNGLE:
         return Biome.JUNGLE;
       case DARK_FOREST:
-      case DARK_FOREST_HILLS:
         return Biome.DARK_FOREST;
       case TAIGA:
-      case TAIGA_HILLS:
-      case TAIGA_MOUNTAINS:
-      case SNOWY_TAIGA_MOUNTAINS:
       case SNOWY_TAIGA:
-      case SNOWY_TAIGA_HILLS:
-      case GIANT_SPRUCE_TAIGA:
-      case GIANT_SPRUCE_TAIGA_HILLS:
-      case GIANT_TREE_TAIGA:
-      case GIANT_TREE_TAIGA_HILLS:
         return Biome.TAIGA;
-      case MOUNTAINS:
-      case WOODED_MOUNTAINS:
-        return Biome.MOUNTAINS;
       case SAVANNA:
+      case WINDSWEPT_SAVANNA:
       case SAVANNA_PLATEAU:
-      case SHATTERED_SAVANNA:
-      case SHATTERED_SAVANNA_PLATEAU:
         return Biome.SAVANNA;
       default:
         return null;
