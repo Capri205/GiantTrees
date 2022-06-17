@@ -23,7 +23,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.Validate;
+import com.google.common.base.Preconditions;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
@@ -62,8 +63,10 @@ public class PhysicalCraftingRecipe {
    *          The rectangle block data bytes to match.
    */
   public PhysicalCraftingRecipe(final Material[][] pattern, final byte[][] data) {
-    Validate.notEmpty(pattern, "pattern cannot be null or empty");
-    Validate.notEmpty(data, "data cannot be null or empty");
+    Preconditions.checkArgument(pattern.length > 0, "pattern cannot be null or empty");
+    Preconditions.checkArgument(pattern != null, "pattern cannot be null or empty");
+    Preconditions.checkArgument(data.length > 0, "data cannot be null or empty");
+    Preconditions.checkArgument(data != null, "pattern cannot be null or empty");
 
     // Validate that pattern and data are the same 'shape'
     if (pattern.length != data.length) { throw new IllegalArgumentException(
@@ -101,11 +104,13 @@ public class PhysicalCraftingRecipe {
                                final Map<Character, Material> materialMap,
                                final Map<Character, Byte> dataMap) {
     // Sanity check the input
-    Validate.notEmpty(rows, "rows cannot be null or empty");
-    Validate.notEmpty(materialMap, "materialMap cannot be null or empty");
-    Validate.notEmpty(dataMap, "dataMap cannot be null or empty");
-    Validate.isTrue(materialMap.size() == dataMap.size(),
-                    "materialMap and dataMap must be the same length");
+    Preconditions.checkArgument(rows.length > 0, "rows cannot be null or empty");
+    Preconditions.checkArgument(rows != null, "rows cannot be null or empty");
+    Preconditions.checkArgument(materialMap.size() > 0, "materialMap cannot be null or empty");
+    Preconditions.checkArgument(materialMap != null, "materialMap cannot be null or empty");
+    Preconditions.checkArgument(dataMap.size() > 0, "dataMap cannot be null or empty");
+    Preconditions.checkArgument(dataMap != null, "dataMap cannot be null or empty");
+    Preconditions.checkArgument(materialMap.size() == dataMap.size(), "materialMap and dataMap must be the same length");
     materialMap.put(' ', null);
 
     // Validate the relationship between rows and maps
@@ -153,9 +158,11 @@ public class PhysicalCraftingRecipe {
   public static PhysicalCraftingRecipe
       fromStringRepresentation(final String[] rows,
                                final Map<Character, String> materialDataMap) {
-    Validate.notEmpty(rows, "rows cannot be null or empty");
-    Validate.notEmpty(materialDataMap, "materialMap cannot be null or empty");
-
+    Preconditions.checkArgument(rows.length > 0, "rows cannot be null or empty");
+    Preconditions.checkArgument(rows != null, "rows cannot be null or empty");    
+    Preconditions.checkArgument(materialDataMap.size() > 0, "materialMap cannot be null or empty");
+    Preconditions.checkArgument(materialDataMap != null, "materialMap cannot be null or empty");
+    
     // Break up materialDataMap into materialMap and dataMap
     final Map<Character, Material> materialMap = new HashMap<>();
     final Map<Character, Byte> dataMap = new HashMap<>();
@@ -184,8 +191,10 @@ public class PhysicalCraftingRecipe {
   }
 
   private static byte[][] bytesFromPattern(final Material[][] pattern) {
-    Validate.notEmpty(pattern, "pattern cannot be null or empty");
-    final byte[][] bytes = new byte[pattern.length][];
+	Preconditions.checkArgument(pattern.length > 0, "pattern cannot be null or empty");
+	Preconditions.checkArgument(pattern != null, "pattern cannot be null or empty");
+
+	final byte[][] bytes = new byte[pattern.length][];
     for (int i = 0; i < bytes.length; i++) {
       bytes[i] = new byte[pattern[i].length];
       Arrays.fill(bytes[i], (byte) -1);
@@ -201,7 +210,7 @@ public class PhysicalCraftingRecipe {
    * @return
    */
   public boolean matches(final Block lastPlaced) {
-    Validate.notNull(lastPlaced, "lastPlaced cannot be null");
+    Preconditions.checkArgument(lastPlaced != null, "lastPlaced cannot be null or empty");
 
     // Verify that the block placed could be part of the pattern
     if (!this.usedMaterials.contains(lastPlaced.getType())) { return false; }
