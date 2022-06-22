@@ -101,11 +101,12 @@ public class CreateTreeCommand implements CommandExecutor {
 
   Block getHighestSoil(Block highestBlock) {
     while ((highestBlock.getY() > 0)
-           && (highestBlock.getType() != Material.DIRT)
-           && // Includes podzol
-           (highestBlock.getType() != Material.GRASS)
-           && (highestBlock.getType() != Material.MYCELIUM)
-           && (highestBlock.getType() != Material.SAND)) {
+      && (highestBlock.getType() != Material.DIRT)
+      && (highestBlock.getType() != Material.GRASS_BLOCK)
+      && (highestBlock.getType() != Material.MUD)
+      && (highestBlock.getType() != Material.MYCELIUM)
+      && (highestBlock.getType() != Material.PODZOL)
+      && (highestBlock.getType() != Material.SAND)) {
       highestBlock = highestBlock.getRelative(BlockFace.DOWN);
     }
     return highestBlock;

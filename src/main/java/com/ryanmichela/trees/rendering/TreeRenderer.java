@@ -84,6 +84,12 @@ public class TreeRenderer {
                     try {
                         TreeRenderer.this.logVerbose("Rendering tree " + treeFile.getName());
                         final Tree tree = TreeRenderer.this.loadTree(treeFile, seed);
+                        
+                        // mangrove tree needs roots exposed so raise up refpoint by 18 blocks (purely experimental)
+                        if (treeFile.getName().contains("MANGROVE")) {
+                        	refPoint.add(0,18,0);
+                        }
+                        
                         tree.make();
                         final TreeType treeType = new TreeType(tree.params.WoodType);
                         final Draw3d d3d = new Draw3d(refPoint,
@@ -95,7 +101,7 @@ public class TreeRenderer {
                         final MinecraftExporter treeExporter = new MinecraftExporter(tree, d3d);
                         treeExporter.write();
 
-                        if (tree.params.WoodType.equals("Jungle")) {
+                        if (tree.params.WoodType.equals("Jungle") || tree.params.WoodType.equals("Mangrove")) {
                             JungleVinePopulator.populate(changeTracker, new Random(seed));
                         }
 

@@ -25,7 +25,7 @@ public class TreeType {
   public Material woodMaterial;
 
   public TreeType(final String treeType) {
-    // "Oak","Spruce","Birch","Jungle","Acacia","Dark Oak"
+    // "Oak","Spruce","Birch","Jungle","Acacia","Dark Oak", "Mangrove", "Mangrove Roots"
     if (treeType.equals("Oak")) {
       this.woodMaterial = Material.OAK_LOG;
       this.leafMaterial = Material.OAK_LEAVES;
@@ -44,6 +44,12 @@ public class TreeType {
     } else if (treeType.equals("Dark Oak")) {
       this.woodMaterial = Material.DARK_OAK_LOG;
       this.leafMaterial = Material.DARK_OAK_LEAVES;
+    } else if (treeType.equals("Mangrove")) {
+      this.woodMaterial = Material.MANGROVE_LOG;
+      this.leafMaterial = Material.MANGROVE_LEAVES;
+    } else if (treeType.equals("Mangrove_roots")) {
+      this.woodMaterial = Material.MANGROVE_ROOTS;
+      this.leafMaterial = Material.MANGROVE_LEAVES;    	
     } else {
       this.woodMaterial = Material.OAK_LOG;
       this.leafMaterial = Material.OAK_LEAVES;

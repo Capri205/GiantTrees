@@ -80,6 +80,8 @@ public class JungleVinePopulator {
             material == Material.DARK_OAK_LOG ||
             material == Material.JUNGLE_LOG ||
             material == Material.OAK_LOG ||
+            material == Material.MANGROVE_LOG ||
+            material == Material.MANGROVE_ROOTS ||
             material == Material.SPRUCE_LOG;
   }
 

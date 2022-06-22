@@ -44,12 +44,16 @@ public class TreePopulator extends BlockPopulator {
   @Override
   public void populate(final World world, final Random random, final Chunk chunk) {
     try {
-      final Location refPoint = new Location(world, (chunk.getX() * 16)
-              + random.nextInt(16), 64,
-              (chunk.getZ() * 16)
-                      + random.nextInt(16));
+      
+      final Location refPoint = new Location(world,
+    		  (chunk.getX() * 16) + random.nextInt(16),
+    		  64,
+              (chunk.getZ() * 16) + random.nextInt(16)
+      );
       refPoint.setY(this.getHighestSoil(world.getHighestBlockAt(refPoint)));
+      
       Biome biome = this.simplifyBiome(world.getBiome(refPoint.getBlockX(), refPoint.getBlockY(), refPoint.getBlockZ()));
+
       if (this.isAcceptableBiome(biome) && this.treeCanGrow(random)) {
         final String treeType = biome.name();
 
@@ -62,8 +66,7 @@ public class TreePopulator extends BlockPopulator {
 
         if (treeFile.exists()) {
           final TreeRenderer renderer = new TreeRenderer(this.plugin);
-          renderer.renderTree(refPoint, treeFile, rootFile, random.nextInt(),
-                  false);
+          renderer.renderTree(refPoint, treeFile, rootFile, random.nextInt(), false);
         }
       }
     } catch (Exception ex) {
@@ -74,9 +77,10 @@ public class TreePopulator extends BlockPopulator {
   int getHighestSoil(Block highestBlock) {
     while ((highestBlock.getY() > 0)
            && (highestBlock.getType() != Material.DIRT)
-           && // Includes podzol
-           (highestBlock.getType() != Material.GRASS)
+           && (highestBlock.getType() != Material.GRASS_BLOCK)
+           && (highestBlock.getType() != Material.MUD)
            && (highestBlock.getType() != Material.MYCELIUM)
+           && (highestBlock.getType() != Material.PODZOL)
            && (highestBlock.getType() != Material.SAND)) {
       highestBlock = highestBlock.getRelative(BlockFace.DOWN);
     }
@@ -85,7 +89,8 @@ public class TreePopulator extends BlockPopulator {
 
   private boolean isAcceptableBiome(final Biome biome) {
     return (biome == Biome.FOREST) || (biome == Biome.BIRCH_FOREST)
-           || (biome == Biome.SWAMP) || (biome == Biome.JUNGLE)
+           || (biome == Biome.SWAMP) || (biome == Biome.MANGROVE_SWAMP)
+           || (biome == Biome.JUNGLE)
            || (biome == Biome.DARK_FOREST) || (biome == Biome.TAIGA)
            || (biome == Biome.SAVANNA);
   }
@@ -101,6 +106,8 @@ public class TreePopulator extends BlockPopulator {
         return Biome.BIRCH_FOREST;
       case SWAMP:
         return Biome.SWAMP;
+      case MANGROVE_SWAMP:
+    	return Biome.MANGROVE_SWAMP;
       case JUNGLE:
       case SPARSE_JUNGLE:
         return Biome.JUNGLE;
@@ -119,19 +126,15 @@ public class TreePopulator extends BlockPopulator {
   }
 
   private boolean treeCanGrow(final Random random) {
-    double growChance = this.plugin.getConfig()
-                                   .getDouble("treeGrowthPercentChance");
+    double growChance = this.plugin.getConfig().getDouble("treeGrowthPercentChance");
     if (growChance > 100.0) {
       growChance = 100.0;
-      this.plugin.getLogger()
-                 .warning("treeGrowthPercentChance > 100. Assuming 100.");
+      this.plugin.getLogger().warning("treeGrowthPercentChance > 100. Assuming 100.");
     }
     if (growChance < 0.0) {
       growChance = 0.0;
-      this.plugin.getLogger()
-                 .warning("treeGrowthPercentChance < 0. Assuming zero.");
+      this.plugin.getLogger().warning("treeGrowthPercentChance < 0. Assuming zero.");
     }
-
     final double randomRoll = random.nextDouble() * 100.0;
     return growChance > randomRoll;
   }

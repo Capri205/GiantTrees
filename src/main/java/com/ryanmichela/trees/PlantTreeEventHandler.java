@@ -73,12 +73,12 @@ public class PlantTreeEventHandler implements Listener {
       boneMealConsumed = patternSection.getInt("bone-meal-consumed");
 
       // Create a PhysicalCraftingRecipe for each kind of sapling
-      List<Material> saplings = Lists.newArrayList(Material.OAK_SAPLING, Material.SPRUCE_SAPLING, Material.BIRCH_SAPLING, Material.JUNGLE_SAPLING, Material.ACACIA_SAPLING, Material.DARK_OAK_SAPLING);
+      List<Material> saplings = Lists.newArrayList(Material.OAK_SAPLING, Material.SPRUCE_SAPLING, Material.BIRCH_SAPLING, Material.JUNGLE_SAPLING, Material.ACACIA_SAPLING, Material.DARK_OAK_SAPLING, Material.MANGROVE_PROPAGULE);
 
       for (Material sapling : saplings) {
         Map<Character, String> patchedMaterialDataMap = new HashMap<>(materialDataMap);
         for (Character c : patchedMaterialDataMap.keySet()) {
-          if (patchedMaterialDataMap.get(c).equals("SAPLING")) {
+          if (patchedMaterialDataMap.get(c).equals("SAPLING") || patchedMaterialDataMap.get(c).equals("PROPAGULE")) {
             patchedMaterialDataMap.put(c, sapling.name());
           }
         }
@@ -138,6 +138,7 @@ public class PlantTreeEventHandler implements Listener {
       case JUNGLE_SAPLING: return "JUNGLE";
       case ACACIA_SAPLING: return "ACACIA";
       case DARK_OAK_SAPLING: return "DARK_OAK";
+      case MANGROVE_PROPAGULE: return "MANGROVE";
       default: return null;
     }
   }
