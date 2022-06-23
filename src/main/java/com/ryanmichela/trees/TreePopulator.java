@@ -75,13 +75,13 @@ public class TreePopulator extends BlockPopulator {
   }
 
   int getHighestSoil(Block highestBlock) {
-    while ((highestBlock.getY() > 0)
+    while (highestBlock.getY() > 0
            && (highestBlock.getType() != Material.DIRT)
            && (highestBlock.getType() != Material.GRASS_BLOCK)
            && (highestBlock.getType() != Material.MUD)
            && (highestBlock.getType() != Material.MYCELIUM)
-           && (highestBlock.getType() != Material.PODZOL)
-           && (highestBlock.getType() != Material.SAND)) {
+           && (!highestBlock.getType().toString().endsWith("SAND"))
+           && (!highestBlock.getType().toString().endsWith("TERRACOTTA"))) {
       highestBlock = highestBlock.getRelative(BlockFace.DOWN);
     }
     return highestBlock.getY();

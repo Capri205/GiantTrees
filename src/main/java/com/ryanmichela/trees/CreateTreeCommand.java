@@ -25,8 +25,10 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -100,14 +102,16 @@ public class CreateTreeCommand implements CommandExecutor {
   }
 
   Block getHighestSoil(Block highestBlock) {
-    while ((highestBlock.getY() > 0)
+	Biome biome = highestBlock.getBiome();
+    while (highestBlock.getY() > 0
       && (highestBlock.getType() != Material.DIRT)
       && (highestBlock.getType() != Material.GRASS_BLOCK)
       && (highestBlock.getType() != Material.MUD)
       && (highestBlock.getType() != Material.MYCELIUM)
       && (highestBlock.getType() != Material.PODZOL)
-      && (highestBlock.getType() != Material.SAND)) {
-      highestBlock = highestBlock.getRelative(BlockFace.DOWN);
+      && (!highestBlock.getType().toString().endsWith("SAND"))
+      && (!highestBlock.getType().toString().endsWith("TERRACOTTA"))) {
+    	highestBlock = highestBlock.getRelative(BlockFace.DOWN);
     }
     return highestBlock;
   }
