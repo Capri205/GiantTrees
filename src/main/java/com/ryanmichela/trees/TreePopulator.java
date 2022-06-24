@@ -76,10 +76,10 @@ public class TreePopulator extends BlockPopulator {
 
   int getHighestSoil(Block highestBlock) {
     while (highestBlock.getY() > 0
-           && (highestBlock.getType() != Material.DIRT)
            && (highestBlock.getType() != Material.GRASS_BLOCK)
            && (highestBlock.getType() != Material.MUD)
            && (highestBlock.getType() != Material.MYCELIUM)
+           && (highestBlock.getType().toString().endsWith("DIRT"))
            && (!highestBlock.getType().toString().endsWith("SAND"))
            && (!highestBlock.getType().toString().endsWith("TERRACOTTA"))) {
       highestBlock = highestBlock.getRelative(BlockFace.DOWN);
@@ -88,11 +88,15 @@ public class TreePopulator extends BlockPopulator {
   }
 
   private boolean isAcceptableBiome(final Biome biome) {
-    return (biome == Biome.FOREST) || (biome == Biome.BIRCH_FOREST)
-           || (biome == Biome.SWAMP) || (biome == Biome.MANGROVE_SWAMP)
-           || (biome == Biome.JUNGLE)
-           || (biome == Biome.DARK_FOREST) || (biome == Biome.TAIGA)
-           || (biome == Biome.SAVANNA);
+    return (biome == Biome.FOREST)
+        || (biome == Biome.BIRCH_FOREST)
+        || (biome == Biome.SWAMP)
+        || (biome == Biome.MANGROVE_SWAMP)
+        || (biome == Biome.JUNGLE)
+        || (biome == Biome.BADLANDS)
+        || (biome == Biome.DARK_FOREST)
+        || (biome == Biome.TAIGA)
+        || (biome == Biome.SAVANNA);
   }
 
   private Biome simplifyBiome(final Biome biome) {
@@ -120,6 +124,10 @@ public class TreePopulator extends BlockPopulator {
       case WINDSWEPT_SAVANNA:
       case SAVANNA_PLATEAU:
         return Biome.SAVANNA;
+      case BADLANDS:
+      case ERODED_BADLANDS:
+      case WOODED_BADLANDS:
+    	return Biome.BADLANDS;
       default:
         return null;
     }
