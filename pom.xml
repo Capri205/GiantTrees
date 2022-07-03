@@ -20,7 +20,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>GiantTrees</groupId>
   <artifactId>GiantTrees</artifactId>
-  <version>3.0.0-alpha.1-SNAPSHOT</version>
+  <version>3.1-SNAPSHOT</version>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -89,7 +89,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>1.10</version>
+        <version>3.3.0</version>
         <executions>
           <execution>
             <id>add-source</id>
@@ -122,7 +122,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.2.0</version>
+        <version>3.3.0</version>
         <executions>
           <execution>
             <id>default</id>
@@ -152,7 +152,7 @@
           <!-- Write POM version to properties file. -->
           <plugin>
             <artifactId>maven-antrun-plugin</artifactId>
-            <version>1.8</version>
+            <version>3.0.0</version>
             <executions>
               <execution>
                 <id>write-properties-file</id>

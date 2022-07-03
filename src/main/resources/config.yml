@@ -6,27 +6,76 @@ treeGrowthPercentChance: 0.5
 
 # The worlds list below is only used when naturallyGrowTrees is set to true
 worlds:
-   - world
+  - world
 
 # The planting pattern is used to grow giant trees in survival mode using collected resources.
-planting-pattern:
-    # Each row in the pattern represents one row of blocks placed horizontally on the ground.
-    # Each unique character in the pattern represents one material. Spaces mean don't care.
-    # All rows must be the same length.
-    pattern:
-        - SSSSS
-        - SSSSS
-        - SSESS
-        - SSSSS
-        - SSSSS
-    # Each unique character in the pattern must have one material mapping.
-    # The pattern must contain at least one "SAPLING", which will expand to each sapling kind.
-    materials:
-        S: SAPLING
-        E: EMERALD_BLOCK
-    # Fertilizing the tree consumes some number of bone meal.
-    bone-meal-consumed: 64
+planting-patterns:
+  # A 5 x 5 matrix is used for the pattern with the core block in the center
+  # Each row in the pattern represents one row of blocks placed horizontally on the ground.
+  # All rows must be the same length (5x5 matrix)
+  # Each character in the pattern represents one of the following saplings:
+  # A=Acacia, O=Oak, D=Dark Oak, B=Birch, M=Mangrove Propaglue, S=Spruce, J=Jungle, and X for core.
+  acacia:
+    - AAAAA
+    - AAAAA
+    - AAXAA
+    - AAAAA
+    - AAAAA
+  oak:
+    - OOOOO
+    - OOOOO
+    - OOXOO
+    - OOOOO
+    - OOOOO
+  birch:
+    - BBBBB
+    - BBBBB
+    - BBXBB
+    - BBBBB
+    - BBBBB
+  dark_oak:
+    - DDDDD
+    - DDDDD
+    - DDXDD
+    - DDDDD
+    - DDDDD
+  spruce:
+    - SSSSS
+    - SSSSS
+    - SSXSS
+    - SSSSS
+    - SSSSS
+  jungle:
+    - JJJJJ
+    - JJJJJ
+    - JJXJJ
+    - JJJJJ
+    - JJJJJ
+  mangrove:
+    - MMMMM
+    - MMMMM
+    - MMXMM
+    - MMMMM
+    - MMMMM
+  mesapuzzle:
+    - AAAAA
+    - AOOOA
+    - AOXOA
+    - AOOOA
+    - AAAAA
+  cottonwood:
+    - BOOOB
+    - OBOBO
+    - OOXOO
+    - OBOBO
+    - BOOOB
 
+# core block (marked by X in patterns)
+core: EMERALD_BLOCK
+
+# Fertilizing the tree consumes some number of bone meal.
+bone-meal-consumed: 64
+  
 # Giant trees can possibly smother players if they don't get out of the way.
 # How many seconds should Giant Trees wait before adding a tree to the world?
 generation-delay: 3
@@ -34,6 +83,6 @@ generation-delay: 3
 # verbose-logging: true
 
 # Only change the settings below if you are having lag problems
-BLOCKS_PER_TICK: 2500       # The number of blocks to modify in a single tick
+BLOCKS_PER_TICK: 1500       # The number of blocks to modify in a single tick
 TICK_DELAY: 1               # The delay in ticks between block modification actions
 SIMPLE_LIGHTING: false      # Disables the second lighting pass

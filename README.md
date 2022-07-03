@@ -17,16 +17,38 @@ Jason Weber and Joseph Penn as implemented by Wolfram Diestel in Arbaro.
 * http://sourceforge.net/projects/arbaro/
 * http://ftp.cs.duke.edu/courses/fall02/cps124/resources/p119-weber.pdf
 
+## IMPORTANT NOTES for version 3.1
+The 3.1 version uses a new configuration file format. You cannot use the old configuration file with this version.
+If you do the plugin will detect an incorrect configuration and disable the tree generation. You must wipe out
+the old GiantTrees folder in the plugins folder and let it create a new config and then you can put back any
+settings you changed. The 3.1 version and the new config file format allows for custom trees beyond the standard
+saplings and now gives you the option of changing patterns for the base tree set too. For example, the new mesapuzzle
+tree has a pattern that is made from both Acacia and Oak saplings. Each tree in the game has it's own recipe now and
+doesn't use the 'S' sapling generic pattern. Core block is indicated by an 'X'. Check the config file for details.
+
+You now need to right click the core block and not the saplings in order to generate the tree.
+
+The pattern matching routine has also been changed to be simpler and I think, more flexible for future updates.
+It uses a series of 90 degree rotations of the recipes in an attempt to match a sapling pattern laid out in the 5x5
+grid. This means you can put put a complex pattern but not have to worry about compass orientation. It currently
+doesn't flip the pattern, but that might be something to add later.
+
+Do not use the reload command on your server. Restart the server for changes to take effect.
+If you encounter lag, try reducing the number of blocks updated per tick in the config. Dark Oak is really laggy!
+Ensure you have at least 2GB of memory allocated to the server.
+
+Report any issues on the github repository.
+
 ## Planting Giant Trees
 
 To plant a giant tree in creative/survival mode, perform the following steps:
 
-1. Flatten a 5x5 area of dirt
-1. Surround an emerald block with two rings of saplings
-1. Fertilize a sapling with a stack of 64 bone meal
-1. Stand back
+1. Flatten a 5x5 area of dirt or grass
+1. Place the core block as defined in the config (default EMERALD_BLOCK) in the center
+1. Surround the core block with two rings of saplings according to the pattern for the tree you want
+1. Right click the core block with a stack of 64 bone meal
+1. Stand back (default of 3 seconds to get out of the way)
 
-The type of sapling fertilized will determine the species of giant tree that grows.
 
 ![Screenshot](doc/planting.png)
 
@@ -74,4 +96,10 @@ your tree, create another tree with the same name as your tree, with .root added
 1. Clone this repo.
 1. Run `mvn package` in the plugin directory.
 1. Copy the Giant Trees jar file from the `target` directory to your server's `plugins` directory.
+1. Restart your server.
+
+or the simple way:
+
+1. Download the jar file from the latest release in the github repository
+1. Move the jar file to the plugins folder
 1. Restart your server.

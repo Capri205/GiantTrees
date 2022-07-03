@@ -18,298 +18,112 @@
 package com.ryanmichela.trees;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import com.google.common.base.Preconditions;
-
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 
 /**
- * PhysicalCraftingRecipe matches blocks laid in a pattern horizontally in the
- * workd.
+ * PhysicalCraftingRecipe represents the Material pattern for a tree and
+ * is used to match against the blocks laid out horizontally in the world
  */
 public class PhysicalCraftingRecipe {
 
-  public final byte[][]      data;
-  public final Material[][]  pattern;
-  public final Set<Material> usedMaterials = new HashSet<>();
+  private String treename = null;
+  private Material[][] pattern = new Material[5][5];
+  private Material coreblock = null;
+  private boolean domatchrotations = false;
 
   /**
-   * Creates a PhysicalCraftingRecipe from a 2D pattern of Materials. The
-   * pattern must
-   * be rectangular - all rows must be the same length.
+   * Creates a PhysicalCraftingRecipe from a 2D pattern of materials.
+   * The pattern must be a 5x5 square.
    *
-   * @param pattern
-   *          The rectangle of Materials to match.
+   * @param treename - Name of the tree - matches tree filename
+   * @param coreblock - The material of the central core block
+   * @param pattern - The rectangle of Materials to match.
    */
-  public PhysicalCraftingRecipe(final Material[][] pattern) {
-    this(pattern, PhysicalCraftingRecipe.bytesFromPattern(pattern));
-  }
+  public PhysicalCraftingRecipe(String treename, Material coreblock, final Material[][] pattern) {
 
-  /**
-   * Creates a PhysicalCraftingRecipe from a 2D pattern of Materials and data
-   * values. The pattern must
-   * be rectangular - all rows must be the same length. Data must be the same
-   * dimensions as pattern.
-   * A data value of -1 matches all data values.
-   *
-   * @param pattern
-   *          The rectangle of Materials to match.
-   * @param data
-   *          The rectangle block data bytes to match.
-   */
-  public PhysicalCraftingRecipe(final Material[][] pattern, final byte[][] data) {
-    Preconditions.checkArgument(pattern.length > 0, "pattern cannot be null or empty");
-    Preconditions.checkArgument(pattern != null, "pattern cannot be null or empty");
-    Preconditions.checkArgument(data.length > 0, "data cannot be null or empty");
-    Preconditions.checkArgument(data != null, "pattern cannot be null or empty");
-
-    // Validate that pattern and data are the same 'shape'
-    if (pattern.length != data.length) { throw new IllegalArgumentException(
-                                                                            "pattern and data must be the same 'shape'"); }
-    for (int i = 0; i < pattern.length; i++) {
-      if (pattern[i].length != data[i].length) { throw new IllegalArgumentException(
-                                                                                    "pattern and data must be the same 'shape'"); }
-    }
-
-    this.pattern = pattern;
-    this.data = data;
-    for (final Material[] row : pattern) {
-      for (final Material col : row) {
-        this.usedMaterials.add(col);
-      }
-    }
-  }
-
-  /**
-   * Constructs a PhysicalCraftingRecipe from an array of strings. Each
-   * character in the array represents one
-   * combination of material/data encoded in materialMap and dataMap. Data
-   * values of -1 match any material value.
-   *
-   * @param rows
-   *          The characters making up the crafting recipe
-   * @param materialMap
-   *          The materials to match in the crafting recipe
-   * @param dataMap
-   *          The data values to match in the crafting recipe
-   * @return
-   */
-  public static PhysicalCraftingRecipe
-      fromStringRepresentation(final String[] rows,
-                               final Map<Character, Material> materialMap,
-                               final Map<Character, Byte> dataMap) {
-    // Sanity check the input
-    Preconditions.checkArgument(rows.length > 0, "rows cannot be null or empty");
-    Preconditions.checkArgument(rows != null, "rows cannot be null or empty");
-    Preconditions.checkArgument(materialMap.size() > 0, "materialMap cannot be null or empty");
-    Preconditions.checkArgument(materialMap != null, "materialMap cannot be null or empty");
-    Preconditions.checkArgument(dataMap.size() > 0, "dataMap cannot be null or empty");
-    Preconditions.checkArgument(dataMap != null, "dataMap cannot be null or empty");
-    Preconditions.checkArgument(materialMap.size() == dataMap.size(), "materialMap and dataMap must be the same length");
-    materialMap.put(' ', null);
-
-    // Validate the relationship between rows and maps
-    final int rowLength = rows[0].length();
-    for (final String row : rows) {
-      if (row.length() != rowLength) { throw new IllegalArgumentException(
-                                                                          "all strings in rows must be the same length"); }
-      for (final char c : row.toCharArray()) {
-        if (!materialMap.containsKey(c)) { throw new IllegalArgumentException(
-                                                                              "all characters in rows must be in materialMap"); }
-        if (!dataMap.containsKey(c)) { throw new IllegalArgumentException(
-                                                                          "all characters in rows must be in dataMap"); }
-      }
-    }
-
-    // Construct the pattern
-    final Material[][] pattern = new Material[rows.length][rowLength];
-    final byte[][] data = new byte[rows.length][rowLength];
-    for (int i = 0; i < rows.length; i++) {
-      for (int j = 0; j < rowLength; j++) {
-        final char c = rows[i].toCharArray()[j];
-        pattern[i][j] = materialMap.get(c);
-        data[i][j] = dataMap.get(c);
-      }
-    }
-
-    return new PhysicalCraftingRecipe(pattern, data);
-  }
-
-  /**
-   * Constructs a PhysicalCraftingRecipe from an array of strings. Each
-   * character in the array represents one
-   * combination of material/data specified in the materialDataMap. The
-   * materialDataMap map entries start with the
-   * name of the associated material, followed by an optional data value
-   * separated by a colon.
-   *
-   * @param rows
-   *          The characters making up the crafting recipe
-   * @param materialDataMap
-   *          A mapping between the crafting recipe characters and
-   *          materials/data.
-   * @return
-   */
-  public static PhysicalCraftingRecipe
-      fromStringRepresentation(final String[] rows,
-                               final Map<Character, String> materialDataMap) {
-    Preconditions.checkArgument(rows.length > 0, "rows cannot be null or empty");
-    Preconditions.checkArgument(rows != null, "rows cannot be null or empty");    
-    Preconditions.checkArgument(materialDataMap.size() > 0, "materialMap cannot be null or empty");
-    Preconditions.checkArgument(materialDataMap != null, "materialMap cannot be null or empty");
+    this.treename = treename;
+    this.coreblock = coreblock;
     
-    // Break up materialDataMap into materialMap and dataMap
-    final Map<Character, Material> materialMap = new HashMap<>();
-    final Map<Character, Byte> dataMap = new HashMap<>();
-    for (final Character c : materialDataMap.keySet()) {
-      final String s = materialDataMap.get(c);
-      final String[] splits = s.split(":", 2);
-      final Material m = Material.matchMaterial(splits[0]);
-      if (m == null) { throw new IllegalArgumentException(
-                                                          splits[0]
-                                                              + " is not a valid material"); }
-      byte b = -1;
-      if (splits.length > 1) {
-        try {
-          b = Byte.parseByte(splits[1]);
-        } catch (final NumberFormatException e) {
-          throw new IllegalArgumentException(splits[1]
-                                             + " is not a valid data byte");
-        }
-      }
-      materialMap.put(c, m);
-      dataMap.put(c, b);
+    // create a copy of the pattern for this recipe and determine if materials are all the same
+    // so we don't have to waste time rotating the matrix when trying to match the pattern
+    Material prevmaterial = pattern[0][0];
+    for (int x = 0; x < 5; x++) {
+    	for (int z = 0; z < 5; z++) {
+    		this.pattern[x][z] = pattern[x][z];
+    		if (!pattern[x][z].equals(prevmaterial)) {
+    			if (!pattern[x][z].equals(this.coreblock)) {
+    				this.domatchrotations = true;
+    			}
+    		}
+    		if (!pattern[x][z].equals(this.coreblock)) {
+    			prevmaterial = pattern[x][z];
+    		}
+    	}
     }
-
-    return PhysicalCraftingRecipe.fromStringRepresentation(rows, materialMap,
-                                                           dataMap);
   }
 
-  private static byte[][] bytesFromPattern(final Material[][] pattern) {
-	Preconditions.checkArgument(pattern.length > 0, "pattern cannot be null or empty");
-	Preconditions.checkArgument(pattern != null, "pattern cannot be null or empty");
-
-	final byte[][] bytes = new byte[pattern.length][];
-    for (int i = 0; i < bytes.length; i++) {
-      bytes[i] = new byte[pattern[i].length];
-      Arrays.fill(bytes[i], (byte) -1);
-    }
-    return bytes;
+  /**
+   * Sets the name of the tree for this recipe
+   * 
+   * @param treename
+   * 
+   * @return void
+   */
+  public void setTreeName(String treename) {
+	  this.treename = treename;
+  }
+  
+  /*
+   * Returns the name of the tree for this recipe
+   * 
+   * @param none
+   * 
+   * @return treename
+   */
+  public String getTreeName() {
+	  return this.treename;
   }
 
   /**
    * Determines if this PhysicalCraftingRecipe matches the blocks in the world.
    *
-   * @param lastPlaced
-   *          A starting point for evaluating this recipe.
-   * @return
+   * @param coreblock - the core block clicked
+   * @return true or false if a match was found
    */
-  public boolean matches(final Block lastPlaced) {
-    Preconditions.checkArgument(lastPlaced != null, "lastPlaced cannot be null or empty");
+  public boolean matches(Material[][] worldblocks) {
+    boolean patternmatch = false;
+    int rotations = 0;
 
-    // Verify that the block placed could be part of the pattern
-    if (!this.usedMaterials.contains(lastPlaced.getType())) { return false; }
-    // Scan the world looking for a match
-    final int size = Math.max(this.pattern.length, this.pattern[0].length);
-    int patternMatchCount = 0;
-    final int y = lastPlaced.getY();
-    for (int x = (lastPlaced.getX() - size) + 1; x <= lastPlaced.getX(); x++) {
-      outer: for (int z = (lastPlaced.getZ() - size) + 1; z <= lastPlaced.getZ(); z++) {
-        boolean allRowsPass = true;
-        inner: for (int px = 0; px < this.pattern.length; px++) {
-          for (int pz = 0; pz < this.pattern[0].length; pz++) {
-            final Block b = lastPlaced.getWorld().getBlockAt(x + px, y, z + pz);
-            if ((this.pattern[px][pz] != null)
-                && (b.getType() != this.pattern[px][pz])) {
-              allRowsPass = false;
-              break inner;
-            } else if ((this.data[px][pz] != -1)
-                       && (b.getData() != this.data[px][pz])) {
-              allRowsPass = false;
-              break inner;
-            }
-          }
-        }
-        if (allRowsPass) {
-          patternMatchCount++;
-          break outer;
-        }
-
-        allRowsPass = true;
-        inner: for (int px = 0; px < this.pattern.length; px++) {
-          for (int pz = 0; pz < this.pattern[0].length; pz++) {
-            final Block b = lastPlaced.getWorld().getBlockAt(x + px, y, z + pz);
-            if ((this.pattern[this.pattern.length - 1 - px][pz] != null)
-                && (b.getType() != this.pattern[this.pattern.length - 1 - px][pz])) {
-              allRowsPass = false;
-              break inner;
-            } else if ((this.data[this.pattern.length - 1 - px][pz] != -1)
-                       && (b.getData() != this.data[this.pattern.length - 1
-                                                    - px][pz])) {
-              allRowsPass = false;
-              break inner;
-            }
-          }
-        }
-        if (allRowsPass) {
-          patternMatchCount++;
-          break outer;
-        }
-
-        allRowsPass = true;
-        inner: for (int px = 0; px < this.pattern.length; px++) {
-          for (int pz = 0; pz < this.pattern[0].length; pz++) {
-            final Block b = lastPlaced.getWorld().getBlockAt(x + px, y, z + pz);
-            if ((this.pattern[px][this.pattern[0].length - 1 - pz] != null)
-                && (b.getType() != this.pattern[px][this.pattern[0].length - 1
-                                                    - pz])) {
-              allRowsPass = false;
-              break inner;
-            } else if ((this.data[px][this.pattern[0].length - 1 - pz] != -1)
-                       && (b.getData() != this.data[px][this.pattern[0].length
-                                                        - 1 - pz])) {
-              allRowsPass = false;
-              break inner;
-            }
-          }
-        }
-        if (allRowsPass) {
-          patternMatchCount++;
-          break outer;
-        }
-
-        allRowsPass = true;
-        inner: for (int px = 0; px < this.pattern.length; px++) {
-          for (int pz = 0; pz < this.pattern[0].length; pz++) {
-            final Block b = lastPlaced.getWorld().getBlockAt(x + px, y, z + pz);
-            if ((this.pattern[this.pattern.length - 1 - px][this.pattern[0].length
-                                                            - 1 - pz] != null)
-                && (b.getType() != this.pattern[this.pattern.length - 1 - px][this.pattern[0].length
-                                                                              - 1
-                                                                              - pz])) {
-              allRowsPass = false;
-              break inner;
-            } else if ((this.data[this.pattern.length - 1 - px][this.pattern[0].length
-                                                                - 1 - pz] != -1)
-                       && (b.getData() != this.data[this.pattern.length - 1
-                                                    - px][this.pattern[0].length
-                                                          - 1 - pz])) {
-              allRowsPass = false;
-              break inner;
-            }
-          }
-        }
-        if (allRowsPass) {
-          patternMatchCount++;
-          break outer;
-        }
-      }
+	if (Arrays.deepEquals(worldblocks, this.pattern)) {
+		patternmatch = true;
+	}
+	// rotate through 270 degrees (3 x 90 degree rotations) as we've already compared one orientation
+	if (domatchrotations) {
+		while (rotations < 3 && !patternmatch) {
+			this.pattern = this.rotateCW(this.pattern);
+			rotations++;
+			if (Arrays.deepEquals(worldblocks, this.pattern)) {
+				patternmatch = true;
+			}
+		}
     }
-    return patternMatchCount == 1;
+
+    return patternmatch;
   }
+  
+  /*
+   * Transposes an array 90 degrees clockwise (fixed 5x5 matrix)
+   * 
+   * @param matrix
+   * @return matrix rotated 90 degrees clockwise
+   */
+  private Material[][] rotateCW(Material[][] matrix) {
+	    Material[][] ret = new Material[5][5];
+	    for (int r = 0; r < 5; r++) {
+	        for (int c = 0; c < 5; c++) {
+	            ret[c][5-1-r] = matrix[r][c];
+	        }
+	    }
+	    return ret;
+	}
 }
