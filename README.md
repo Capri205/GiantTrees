@@ -17,6 +17,30 @@ Jason Weber and Joseph Penn as implemented by Wolfram Diestel in Arbaro.
 * http://sourceforge.net/projects/arbaro/
 * http://ftp.cs.duke.edu/courses/fall02/cps124/resources/p119-weber.pdf
 
+## IMPORTANT NOTES for version 3.2
+Custom trees can be added to a biome by naming the tree and root files as such:
+
+biome.&lt;biome&gt;-&lt;name&gt;.xml<br>
+biome.&lt;biome&gt;-&lt;name&gt;.root.xml
+
+Where is the the biome in question - FOREST, BIRCH_FOREST, DARK_FOREST, SWAMP, MANGROVE_SWAMP, JUNGLE, BADLANDS, SAVANNA and TAIGA,<br>
+hyphen separator between biome and tree name is required,<br>
+and is anything you want to call the tree using lowercase and uppercase letters, numbers, underscore or hyphen.
+
+For example. to have Oak, Cottonwood, and Bramble Wood trees spawn naturally in the FOREST biome, the file names could be something like this:
+
+biome.FOREST-BrambleWood.xml (along with .root.xml file)<br>
+biome.FOREST-COTTONWOOD.xml (along with .root.xml file)<br>
+biome.FOREST-Oak.xml (along with .root.xml file)<br>
+
+The base set of biome tree files that come with the plugin have been renamed to include the tree name in the filename. So biome.FOREST.xml and biome.FOREST.root.xml were just copies of tree.OAK.xml and tree.OAK.root.xml, so are now called biome.FOREST-OAK.xml and biome.FOREST-OAK.root.xml. Additional tree types you create should follow this naming convention.
+
+When a tree is going to be generated the tree files are read from the plugin directory for the biome in question, and a tree chosen at random from the selection. New trees can be placed in the folder and will be included in future selections. No restart or reload is required to get a new tree into a biome.
+
+You might want to remove the biome tree files from the plugin directory if upgrading from older versions, but given they don't follow the naming convention they will not be used.
+
+Feel free to send in your trees for inclusion in the plugin!
+
 ## IMPORTANT NOTES for version 3.1
 The 3.1 version uses a new configuration file format. You cannot use the old configuration file with this version.
 If you do the plugin will detect an incorrect configuration and disable the tree generation. You must wipe out
