@@ -18,8 +18,12 @@
 package com.ryanmichela.trees;
 
 import java.io.File;
+import java.io.FilenameFilter;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -56,15 +60,39 @@ public class TreePopulator extends BlockPopulator {
 
       if (this.isAcceptableBiome(biome) && this.treeCanGrow(random)) {
         final String treeType = biome.name();
+        
+        // get list of available tree files with biome name in
+        File [] biometreefiles = this.plugin.getDataFolder().listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.startsWith("biome.");
+            }
+        });
+        ArrayList<String> availabletrees = new ArrayList<String>();
+		String regex = "biome." + biome.name().toUpperCase() + "((-([0-9A-Z-_]*)){0,}).xml";
+		Pattern pattern = Pattern.compile(regex);
+		for ( int idx = 0; idx < biometreefiles.length; idx++ ) {
+			Matcher match = pattern.matcher( biometreefiles[idx].toString() );
+			if ( match.find() ) {
+				availabletrees.add(match.group());
+			}
+		}
+		        
+        // pick a random file from set
+		int randtreeidx = (int) ((Math.random() * (availabletrees.size() - 0)) + 0);
+        
+        //final File treeFile = new File(this.plugin.getDataFolder(), "biome."
+        //        + treeType
+        //        + ".xml");
+        //final File rootFile = new File(this.plugin.getDataFolder(), "biome."
+        //        + treeType
+        //        + ".root.xml");
+		File treeFile = null;
+		File rootFile = null;
+		treeFile = new File( this.plugin.getDataFolder(), availabletrees.get(randtreeidx) );
+		rootFile = new File( this.plugin.getDataFolder(), availabletrees.get(randtreeidx).replace( ".xml", ".root.xml" ) );
 
-        final File treeFile = new File(this.plugin.getDataFolder(), "biome."
-                + treeType
-                + ".xml");
-        final File rootFile = new File(this.plugin.getDataFolder(), "biome."
-                + treeType
-                + ".root.xml");
-
-        if (treeFile.exists()) {
+        if ( treeFile.exists() && rootFile.exists() ) {
           final TreeRenderer renderer = new TreeRenderer(this.plugin);
           renderer.renderTree(refPoint, treeFile, rootFile, random.nextInt(), false);
         }

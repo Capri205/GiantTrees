@@ -70,13 +70,13 @@ public class TreePlugin extends JavaPlugin {
       this.saveDefaultConfig();
     }
     // unpack basic trees
-    for (final String biome : ImmutableList.of("BIRCH_FOREST", "FOREST", "JUNGLE", "DARK_FOREST",
-                                               "SAVANNA", "TAIGA", "MANGROVE_SWAMP", "BADLANDS")) {
-      ensureTreeFileExists("biome." + biome);
+    for (final String biome : ImmutableList.of("BIRCH_FOREST-BIRCH", "FOREST-OAK", "FOREST-COTTONWOOD", "JUNGLE-JUNGLE", "DARK_FOREST-DARK_OAK",
+                                               "SAVANNA-ACACIA", "TAIGA-SPRUCE", "MANGROVE_SWAMP-MANGROVE", "BADLANDS-MESAPUZZLE")) {
+    	ensureTreeFileExists("biome." + biome);
     }
-    for (final String tree : ImmutableList.of("ACACIA", "BIRCH", "DARK_OAK", "JUNGLE",
-    		                                  "OAK", "SPRUCE", "MANGROVE", "MESAPUZZLE")) {
-      ensureTreeFileExists("tree." + tree);
+    for (final String tree : ImmutableList.of("ACACIA", "BIRCH", "DARK_OAK", "JUNGLE", "OAK",
+    		                                  "SPRUCE", "MANGROVE", "MESAPUZZLE", "COTTONWOOD")) {
+    	ensureTreeFileExists("tree." + tree);
     }
   }
 
