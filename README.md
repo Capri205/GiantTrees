@@ -23,9 +23,9 @@ Custom trees can be added to a biome by naming the tree and root files as such:
 biome.&lt;biome&gt;-&lt;name&gt;.xml<br>
 biome.&lt;biome&gt;-&lt;name&gt;.root.xml
 
-Where is the the biome in question - FOREST, BIRCH_FOREST, DARK_FOREST, SWAMP, MANGROVE_SWAMP, JUNGLE, BADLANDS, SAVANNA and TAIGA,<br>
+Where &lt;biome&gt; is the biome in question - FOREST, BIRCH_FOREST, DARK_FOREST, SWAMP, MANGROVE_SWAMP, JUNGLE, BADLANDS, SAVANNA and TAIGA,<br>
 hyphen separator between biome and tree name is required,<br>
-and is anything you want to call the tree using lowercase and uppercase letters, numbers, underscore or hyphen.
+and &lt;name&gt; is anything you want to call the tree using lowercase and uppercase letters, numbers, underscore or hyphen.
 
 For example. to have Oak, Cottonwood, and Bramble Wood trees spawn naturally in the FOREST biome, the file names could be something like this:
 
