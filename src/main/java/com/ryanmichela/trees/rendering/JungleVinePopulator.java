@@ -77,6 +77,7 @@ public class JungleVinePopulator {
   private static boolean isLog(Material material) {
     return  material == Material.ACACIA_LOG ||
             material == Material.BIRCH_LOG ||
+            material == Material.CHERRY_LOG ||
             material == Material.DARK_OAK_LOG ||
             material == Material.JUNGLE_LOG ||
             material == Material.OAK_LOG ||

@@ -59,6 +59,7 @@ public class PlantTreeEventHandler implements Listener {
 			  put('M', Material.MANGROVE_PROPAGULE);
 			  put('S', Material.SPRUCE_SAPLING);
 			  put('J', Material.JUNGLE_SAPLING);
+			  put('C', Material.CHERRY_SAPLING);
 		  }
 	  };
   }

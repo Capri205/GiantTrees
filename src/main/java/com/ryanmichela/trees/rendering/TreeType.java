@@ -35,6 +35,9 @@ public class TreeType {
     } else if (treeType.equals("Birch")) {
       this.woodMaterial = Material.BIRCH_LOG;
       this.leafMaterial = Material.BIRCH_LEAVES;
+    } else if (treeType.equals("Cherry")) {
+      this.woodMaterial = Material.CHERRY_LOG;
+      this.leafMaterial = Material.CHERRY_LEAVES;
     } else if (treeType.equals("Jungle")) {
       this.woodMaterial = Material.JUNGLE_LOG;
       this.leafMaterial = Material.JUNGLE_LEAVES;

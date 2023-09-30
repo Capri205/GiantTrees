@@ -14,7 +14,7 @@ planting-patterns:
   # Each row in the pattern represents one row of blocks placed horizontally on the ground.
   # All rows must be the same length (5x5 matrix)
   # Each character in the pattern represents one of the following saplings:
-  # A=Acacia, O=Oak, D=Dark Oak, B=Birch, M=Mangrove Propaglue, S=Spruce, J=Jungle, and X for core.
+  # A=Acacia, O=Oak, D=Dark Oak, B=Birch, C=Cherry, M=Mangrove Propaglue, S=Spruce, J=Jungle, and X for core.
   acacia:
     - AAAAA
     - AAAAA
@@ -33,6 +33,12 @@ planting-patterns:
     - BBXBB
     - BBBBB
     - BBBBB
+  cherry:
+    - CCCCC
+    - CCCCC
+    - CCXCC
+    - CCCCC
+    - CCCCC
   dark_oak:
     - DDDDD
     - DDDDD

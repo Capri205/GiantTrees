@@ -118,6 +118,7 @@ public class TreePopulator extends BlockPopulator {
   private boolean isAcceptableBiome(final Biome biome) {
     return (biome == Biome.FOREST)
         || (biome == Biome.BIRCH_FOREST)
+        || (biome == Biome.CHERRY_GROVE)
         || (biome == Biome.SWAMP)
         || (biome == Biome.MANGROVE_SWAMP)
         || (biome == Biome.JUNGLE)
@@ -136,6 +137,8 @@ public class TreePopulator extends BlockPopulator {
       case BIRCH_FOREST:
       case OLD_GROWTH_BIRCH_FOREST:
         return Biome.BIRCH_FOREST;
+      case CHERRY_GROVE:
+        return Biome.CHERRY_GROVE;
       case SWAMP:
         return Biome.SWAMP;
       case MANGROVE_SWAMP:
